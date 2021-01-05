@@ -15,7 +15,7 @@ use Stripe\Token;
 use Stripe\Charge;
 use App\Transaction;
 use App\DepositRequest;
-use App\Lib\coinBase;
+
 use App\Lib\coinPayments;
 
 use Illuminate\Support\Facades\Auth;
@@ -129,23 +129,17 @@ class PaymentGatwayController extends Controller
                $btcrate = $res->USD->last;
                $amon = $data->amount;
                $usd = $data->usd_amo;
-            //    $bcoin = round($usd/$btcrate,8);
+               $bcoin = round($usd/$btcrate,8);
+               $callbackUrl = route('ipn.coinpayemnt');
+               $CP = new coinPayments();
 
 
-               $CP = new coinBase();
-
-
-               $CP->setAPIKey($method->gateway_key_one);
-               $CP->setAPIVersion($method->gateway_key_two);
-               $ntrc = $data->trx; //description
-               $response = $CP->createPayment('Deposit', $usd, $ntrc);
+               $CP->setMerchantId($method->gateway_key_one);
+               $CP->setSecretKey($method->gateway_key_two);
+               $ntrc = $data->trx;
+               $form = $CP->createPayment('Deposit', 'BTC',  $bcoin, $ntrc, $callbackUrl);
                $page_title = $method->name;
-
-               return view('user.deposit.payment_views.coinbase', compact('response','page_title','amon', 'gnl'));
-
-
-
-
+               return view('user.deposit.payment_views.coinpay', compact('bcoin','form','page_title','amon', 'gnl'));
             }
 
            if ($data->gateway_id == 3){

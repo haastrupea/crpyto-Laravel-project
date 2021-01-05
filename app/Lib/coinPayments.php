@@ -4,13 +4,13 @@ namespace App\Lib;
 
 use App\Lib\CPHelper;
 
-class coinPayments extends CPHelper 
+class coinPayments extends CPHelper
 {
 
 	private $secretKey;
 	private $merchantId;
 	private $isHttpAuth;
-	public $paymentErrors;
+    public $paymentErrors;
 
 
 	public function setMerchantId($merchant)
@@ -30,7 +30,7 @@ class coinPayments extends CPHelper
 				  'merchant' => $this->merchantId,
 				  'item_name' => $productName,
 				  'currency' => $currency,
-				  'amountf' => $price, 
+				  'amountf' => $price,
 				  'ipn_url' => $callbackUrl,
 				  'success_url' => $successUrl,
 				  'cancel_url' => $cancelUrl,
@@ -54,9 +54,9 @@ class coinPayments extends CPHelper
 		}
 
 		if($this->isHttpAuth || $_POST['ipn_mode'] != 'hmac') {
-			
-			//Verify that the http authentication checks out with the users supplied information 
-			// 
+
+			//Verify that the http authentication checks out with the users supplied information
+			//
 			if($_SERVER['PHP_AUTH_USER']==$this->merchantId && $_SERVER['PHP_AUTH_PW']==$this->secretKey)
 			{
 				// Failsafe to prevent malformed requests to throw an error
@@ -67,7 +67,7 @@ class coinPayments extends CPHelper
 
 					return false;
 
-					
+
 				}
 
 				if($this->checkFields()) {

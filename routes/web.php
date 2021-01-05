@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/cron', 'UiController@cronAction');
 
 
-
 Route::group(['prefix' => 'admin','namespace'=> 'Admin'], function () {
     Route::get('/', 'AdminLoginController@showAdminLoginForm');
     Route::post('/', 'AdminLoginController@adminLogin')->name('admin.login');
@@ -183,10 +182,9 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 
-//ipn
+//ipn/webhook
 Route::get('payment', 'PayPalController@payment');
 Route::get('cancel', 'PayPalController@cancel')->name('paypal.payment.cancel');
 Route::get('payment/success', 'PayPalController@success')->name('paypal.payment.success');
 Route::post('/ipncoin', 'CoinpaymentController@ipnCoin')->name('ipn.coinpayemnt');
 Route::post('/ipnstripe', 'StripeController@ipnstripe')->name('ipn.stripe');
-
